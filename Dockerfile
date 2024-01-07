@@ -41,6 +41,12 @@ RUN ["npm", "run", "build"]
 # Run predev script
 RUN ["npm", "run", "predev"]
 
+# Copy smoke test
+COPY smoke.sh ./
+
+# Run smoke test
+RUN ["bash", "smoke.sh"]
+
 # Set the command to run the application
 CMD ["npm", "run", "start"]
 
