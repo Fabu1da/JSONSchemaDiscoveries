@@ -1,0 +1,34 @@
+diff --git a/server/models/user/user.ts b/server/models/user/user.ts
+--- a/server/models/user/user.ts
++++ b/server/models/user/user.ts
+@@ -1,13 +1,23 @@
+ import * as bcrypt from 'bcryptjs';
+ import * as mongoose from 'mongoose';
+ 
++interface IUser extends mongoose.Document {
++  username: string;
++  email: string;
++  password: string;
++  comparePassword: (candidatePassword: string) => Promise<boolean>;
++}
++
+ const userSchema = new mongoose.Schema({
+   'username': {type: String, required: true},
+   'email': {type: String, unique: true, lowercase: true, trim: true, required: true},
+   'password': {type: String, required: true}
+ }, {timestamps: {createdAt: 'createdAt'}});
+ 
+-userSchema.methods.comparePassword = function (candidatePassword) {
++userSchema.methods.comparePassword = function (
++  this: IUser,
++  candidatePassword: string
++): Promise<boolean> {
+   return bcrypt.compare(candidatePassword, this.password);
+ };
+ 
+@@ -18,4 +28,4 @@ userSchema.set('toJSON', {
+   }
+ });
+ 
+-export default mongoose.model('User', userSchema);
++export default mongoose.model<IUser>('User', userSchema);
