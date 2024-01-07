@@ -1,3 +1,23 @@
+# Use stable-slim version of Debian
+FROM debian:stable-slim AS latex
+
+# Update package list and install LaTeX
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    latexmk \
+    make \
+    texlive && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create latex directory
+WORKDIR /latex/
+
+# Copy report
+COPY report/ ./
+
+# Build the report
+RUN ["make", "report"]
+
 # Use Node.js version 18 (slim version)
 FROM node:18-slim
 
@@ -46,6 +66,9 @@ COPY smoke.sh ./
 
 # Run smoke test
 RUN ["bash", "smoke.sh"]
+
+# Copy report
+COPY --from=latex /latex/report.pdf ./report.pdf
 
 # Set the command to run the application
 CMD ["npm", "run", "start"]
