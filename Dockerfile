@@ -18,6 +18,20 @@ COPY report/ ./
 # Build the report
 RUN ["make", "report"]
 
+# Use stable-slim version of Debian
+FROM debian:stable-slim AS geotopics
+
+# Update package list and install Git
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    git && \
+    rm -rf /var/lib/apt/lists
+
+WORKDIR /geotopics/
+
+# Clone the dataset
+RUN git clone https://github.com/mmathioudakis/geotopics ./
+
 # Use Node.js version 18 (slim version)
 FROM node:18-slim
 
@@ -69,6 +83,9 @@ RUN ["bash", "smoke.sh"]
 
 # Copy report
 COPY --from=latex /latex/report.pdf ./report.pdf
+
+# Copy data
+COPY --from=geotopics /geotopics/data/ ./data/
 
 # Set the command to run the application
 CMD ["npm", "run", "start"]
