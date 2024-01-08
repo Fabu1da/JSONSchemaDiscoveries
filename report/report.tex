@@ -1,5 +1,98 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+
+% VLDB template version of 2020-08-03 enhances the ACM template, version 1.7.0:
+% https://www.acm.org/publications/proceedings-template
+% The ACM Latex guide provides further information about the ACM template
+
+\documentclass[sigconf, nonacm]{acmart}
+
+%% The following content must be adapted for the final version
+% paper-specific
+\newcommand\vldbdoi{XX.XX/XXX.XX}
+\newcommand\vldbpages{XXX-XXX}
+% issue-specific
+\newcommand\vldbvolume{14}
+\newcommand\vldbissue{1}
+\newcommand\vldbyear{2020}
+% should be fine as it is
+\newcommand\vldbauthors{\authors}
+\newcommand\vldbtitle{\shorttitle} 
+% leave empty if no availability url should be set
+\newcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
+% whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
+\newcommand\vldbpagestyle{plain} 
+
 \begin{document}
-(Type your content here.)
+\title{Json Schema extraction Report}
+
+%%
+%% The "author" command and its associated commands are used to define the authors and their affiliations.
+\author{Fabien Kavuganyi}
+\affiliation{%
+  \institution{Passau university}
+  \streetaddress{P.O. Box 1212}
+  \city{Passau}
+  \state{Germany}
+  \postcode{43017-6221}
+}
+\email{kavuga01@ads.uni-passau.de}
+
+
+
+\maketitle
+
+
+
+\section{Introduction}
+In today's business landscape, data has emerged as the most pivotal asset. This was first articulated by British mathematician Clive Humby in 2006 when he famously stated, "Data is the new oil."~\cite{js} However, as the pace of the world accelerates, data's significance seems to eclipse even that of gold. The importance of having clean and reliable data cannot be overstated for companies, as it serves as a key driver for insights and future predictions~\cite{8424731}.
+
+This report details an experiment I conducted focusing on JSON, a format widely used by NoSQL databases to manage unstructured data. JSON stands out for its performance capabilities, especially in handling large volumes of data efficiently. Ensuring the integrity and verifying the accuracy of data stored in JSON format is crucial. This is achieved by establishing clear rules and constraints for the JSON data, thereby enhancing its reliability.
+
+\section{Hypothesis}
+
+
+The core objective of this experiment was to reproduce the process of JSON schema extraction, specifically in the context of a NoSQL database environment like MongoDB. The primary challenge involved dockerizing the project and conducting a series of experiments, which were selected based on a particular study referenced in paper~\cite{8424731}. The aim was to refine and enhance the methodology of JSON schema extraction.
+ 
+
+\subsection{Figures}
+
+In this research, I conducted two out of the three experiments proposed in paper~\cite{8424731}, specifically focusing on the Foursquare datasets which is table 3 in the paper. The experiments performed were:
+
+\begin{itemize}
+    \item Analyzing Firenze Venues
+    \item Examining Firenze Checkins
+\end{itemize}
+The sample sizes for the Firenze Venues experiment were constrained to 332 and 900 due to limited data availability. Additionally, the results of these experiments are compiled in Table bellow, which presents detailed outcomes for the Foursquare datasets. \autoref{fig:image}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figures/image}
+  \caption{a Schema outcome form jsonschema extraction }
+  \label{fig:image}
+\end{figure}
+
+
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  Datasets & N JSON & RS & ROrd & TB & TT & TB/TT \\
+  \hline
+  venues & 332 &  3 & 3 & 109s & 142s & 76\%\\
+  \hline
+\end{tabular}
+
+
+
+
+\subsection{States criteria for successful confirmation of results}
+
+The inconsistency between the results from Table 5 in the paper and my findings can be attributed to the differences in the data sets used. The venue data in the paper consisted of over two million lines, significantly more than my dataset. Additionally, variations in the schema, including a few attributes and data types, further contributed to the differing outcomes. These factors highlight how data volume and schema details can influence the results in such experiments. project directory~\cite{project1}
+
+
+
+%\clearpage
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{sample}
+
 \end{document}
+\endinput
