@@ -16,21 +16,22 @@ WORKDIR /latex/
 COPY report/ ./
 
 # Build the report
-RUN ["make", "report"]
+#RUN ["make", "report"]
 
 # Use stable-slim version of Debian
 FROM debian:stable-slim AS geotopics
 
-# Update package list and install Git
+# Update package list and install Wget
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git && \
+    ca-certificates \
+    wget && \
     rm -rf /var/lib/apt/lists
 
 WORKDIR /geotopics/
 
 # Clone the dataset
-RUN git clone https://github.com/mmathioudakis/geotopics ./
+RUN wget https://raw.githubusercontent.com/mmathioudakis/geotopics/master/data/firenze_checkins.json https://raw.githubusercontent.com/mmathioudakis/geotopics/master/data/firenze_venues.json
 
 # Use Node.js version 18 (slim version)
 FROM node:18-slim
@@ -82,10 +83,10 @@ COPY smoke.sh ./
 RUN ["bash", "smoke.sh"]
 
 # Copy report
-COPY --from=latex /latex/report.pdf ./report.pdf
+#COPY --from=latex /latex/report.pdf ./report.pdf
 
 # Copy data
-COPY --from=geotopics /geotopics/data/ ./data/
+COPY --from=geotopics /geotopics/ ./data/
 
 # Set the command to run the application
 CMD ["npm", "run", "start"]
