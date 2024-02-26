@@ -56,14 +56,14 @@ docker compose up --abort-on-container-exit --force-recreate -V --no-attach mong
 
 This command rebuilds the project, forces the recreation of containers, removes named volumes, and detaches the MongoDB service so that you only see the essential information in your console.
 
-## Usage
+## Make report
 
-(Here you should provide instructions on how to use the project, any commands users can run, and examples of typical use cases.)
+Option: to make a report you can follow this steps:
 
-## Contributing
 
-We welcome contributions! Please read our contributing guide for details on our code of conduct, and the process for submitting pull requests to us.
+```bash	
+cd report
+make clean
+make report
+````
 
-## Acknowledgments
-
-(List any other open-source projects or individuals you want to thank or reference.)
