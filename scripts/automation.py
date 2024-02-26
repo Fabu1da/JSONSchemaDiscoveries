@@ -185,7 +185,7 @@ def main(args: argparse.Namespace) -> None:
                 writer.writerow([key, value])
 
         print(f'Data successfully written to {csv_file_name}')
-        print("csv ubder")
+        print("csv under")
 
         with open(csv_file_name, mode='r') as file:
             csv_reader = csv.reader(file)
