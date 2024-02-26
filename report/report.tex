@@ -81,19 +81,6 @@ N JSON - Number of JSON documents. RS - Raw schemas. ROrd - Raw schemas with ord
 \label{your-table-label}
 \end{table}
 
-
-
-\begin{tabular}{l|c}%
-  \bfseries Datasets & \bfseries N JSON & \bfseries RS & \bfseries ROrd & \bfseries TB/min & \bfseries TT/min & \bfseries TB/TT% specify table head
-  \csvreader[head to column names]{output.csv}{}% use head of csv as column names
-  {\\\hline\ Datasets & \N JSON & \RS & \ROrd & \TB/min & \TT/min & \TB/TT }
-  % specify your coloumns here
-  \end{tabular}
-
-
-
-
-
 We aim to refine the methodology of JSON Schema Extraction by leveraging the ease and flexibility of Docker containers on local machines. This approach enables us to replicate the original project environments meticulously, ensuring that our experimental setup mirrors the original conditions as closely as possible. By applying necessary patches and maintaining project functionality, we ensure a high degree of accuracy and reproducibility in our work.
 
 Our experiment utilizes datasets that closely match the original study's in terms of check-ins, tweets, and venues, maintaining consistency and relevance in our data analysis. This careful selection underpins our comparative analysis, allowing for a direct assessment of the enhancements made to the schema extraction process.
