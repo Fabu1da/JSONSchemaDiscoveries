@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     latexmk \
     make \
-    texlive && \
+    texlive-full && \
     rm -rf /var/lib/apt/lists/*
 
 # Create latex directory
@@ -16,7 +16,7 @@ WORKDIR /latex/
 COPY report/ ./
 
 # Build the report
-#RUN ["make", "report"]
+RUN ["make", "report"]
 
 # Use Node.js version 18 (slim version)
 FROM node:18-slim
@@ -70,11 +70,12 @@ COPY scripts/ ./scripts/
 # Copy data
 COPY data/ ./data/
 
+
 # Run smoke test
 RUN ["bash", "scripts/smoke.sh"]
 
 # Copy report
-#COPY --from=latex /latex/report.pdf ./report.pdf
+COPY --from=latex /latex/report.pdf ./report.pdf
 
 # Set the command to run the application
 CMD ["bash", "scripts/start.sh"]

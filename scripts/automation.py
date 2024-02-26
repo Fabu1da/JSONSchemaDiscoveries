@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 import argparse
 from datetime import datetime
+
 import json
+import csv
 import random
 
 import pymongo
 import requests
 
 datetime_format: str = r'%Y-%m-%dT%H:%M:%S.%fZ'
+# headers column names
+headers = ['Collection', 'N JSON', 'RS', 'ROrd','TB','TT','TB/TT']
+
+# Specify the CSV file name.
+csv_file_name = '..\\report\\output.csv'
 
 
 def mongoimport(client: pymongo.MongoClient, databaseName: str, collectionName: str) -> None:
@@ -155,6 +162,46 @@ def main(args: argparse.Namespace) -> None:
         print("step 4:", endDate - unionDate)
         print("total:", endDate - startDate)
         print()
+
+        collection_results = {
+        'step 1': str(extractionDate - startDate),
+        'step 2.1': str(unorderedAggregationDate - extractionDate),
+        'step 2.2': str(orderedAggregationDate - unorderedAggregationDate),
+        'step 3': str(unionDate - orderedAggregationDate),
+        'step 4': str(endDate - unionDate),
+        'total': str(endDate - startDate)
+        }
+
+        print("collection_results:", collection_results)
+       # Writing data to CSV.
+        with open(csv_file_name, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            
+            # Optionally write headers
+            writer.writerow(['Key', 'Value'])
+            
+            # Writing the rows.
+            for key, value in collection_results.items():
+                writer.writerow([key, value])
+
+        print(f'Data successfully written to {csv_file_name}')
+        print("csv ubder")
+
+        with open(csv_file_name, mode='r') as file:
+            csv_reader = csv.reader(file)
+            
+            # Printing each row in the CSV file
+            for row in csv_reader:
+                print(row)
+
+
+        # # Write the data to a CSV file
+        # with open(csv_file_name, 'w', newline='', encoding='utf-8') as csv_file:
+        #     writer = csv.DictWriter(csv_file, fieldnames=headers)
+        #     writer.writeheader()
+        #     for item in collection_results:
+        #         writer.writerow(item)
+
 
 
 if __name__ == "__main__":
