@@ -7,6 +7,7 @@ import csv
 import random
 
 import pymongo
+import pymongo.errors
 import requests
 
 datetime_format: str = r'%Y-%m-%dT%H:%M:%S.%fZ'
@@ -14,7 +15,7 @@ datetime_format: str = r'%Y-%m-%dT%H:%M:%S.%fZ'
 headers = ['Collection', 'N JSON', 'RS', 'ROrd','TB','TT','TB/TT']
 
 # Specify the CSV file name.
-csv_file_name = '..\\report\\output.csv'
+csv_file_name = './report/report.csv'
 
 
 def mongoimport(client: pymongo.MongoClient, databaseName: str, collectionName: str) -> None:
@@ -193,6 +194,9 @@ def main(args: argparse.Namespace) -> None:
             # Printing each row in the CSV file
             for row in csv_reader:
                 print(row)
+
+
+     
 
 
         # # Write the data to a CSV file
