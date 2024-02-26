@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     latexmk \
     make \
-    texlive && \
+    texlive-full && \
     rm -rf /var/lib/apt/lists/*
 
 # Create latex directory
@@ -17,20 +17,6 @@ COPY report/ ./
 
 # Build the report
 RUN ["make", "report"]
-
-# Use stable-slim version of Debian
-FROM debian:stable-slim AS geotopics
-
-# Update package list and install Git
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    git && \
-    rm -rf /var/lib/apt/lists
-
-WORKDIR /geotopics/
-
-# Clone the dataset
-RUN git clone https://github.com/mmathioudakis/geotopics ./
 
 # Use Node.js version 18 (slim version)
 FROM node:18-slim
@@ -43,7 +29,10 @@ RUN apt-get update && \
     gcc \
     git \
     make \
-    python3 && \
+    netcat-openbsd \
+    python3 \
+    python3-pymongo \
+    python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
     update-ca-certificates && \
     ln -s /usr/bin/python3 /usr/bin/python
@@ -75,20 +64,21 @@ RUN ["npm", "run", "build"]
 # Run predev script
 RUN ["npm", "run", "predev"]
 
-# Copy smoke test
-COPY smoke.sh ./
+# Copy scripts
+COPY scripts/ ./scripts/
+
+# Copy data
+COPY data/ ./data/
+
 
 # Run smoke test
-RUN ["bash", "smoke.sh"]
+RUN ["bash", "scripts/smoke.sh"]
 
 # Copy report
 COPY --from=latex /latex/report.pdf ./report.pdf
 
-# Copy data
-COPY --from=geotopics /geotopics/data/ ./data/
-
 # Set the command to run the application
-CMD ["npm", "run", "start"]
+CMD ["bash", "scripts/start.sh"]
 
 # Expose port 3000
 EXPOSE 3000

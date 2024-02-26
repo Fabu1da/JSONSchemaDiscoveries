@@ -1,7 +1,7 @@
 all: report
 
 report:
-	latexmk -pdf
+	latexmk -pdf -f
 
 clean:
 	latexmk -CA
